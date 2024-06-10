@@ -42,27 +42,32 @@ def regioni_con_arrivi_per_anno(df_arr_agri):
     plt.show()
 
 #Media: La media è la somma di tutti i numeri in un set di dati diviso per il numero di elementi
-# nel set di dati. È una misura di tendenza centrale che indica il valore “tipico” in un set di dati.
-# Nel tuo caso, la media degli arrivi per ogni regione ti dà un’idea del numero medio di arrivi in 
-# quella regione nel corso degli anni.
+#       nel set di dati. È una misura di tendenza centrale che indica il valore “tipico” in un set di dati.
+#       Nel tuo caso, la media degli arrivi per ogni regione ti dà un’idea del numero medio di arrivi in 
+#       quella regione nel corso degli anni.
 #Mediana: La mediana è il valore che divide un set di dati in due parti uguali, con metà dei dati
-# che sono inferiori alla mediana e metà dei dati che sono superiori. È una misura di tendenza centrale
-# che è utile quando i dati sono distorti o hanno valori estremi che potrebbero rendere la media non 
-# rappresentativa. Nel tuo caso, la mediana degli arrivi per ogni regione ti dà un’idea del “valore tipico”
-# degli arrivi che non è influenzato dagli anni con un numero insolitamente alto o basso di arrivi.
+#         che sono inferiori alla mediana e metà dei dati che sono superiori. È una misura di tendenza centrale
+#         che è utile quando i dati sono distorti o hanno valori estremi che potrebbero rendere la media non 
+#         rappresentativa. Nel tuo caso, la mediana degli arrivi per ogni regione ti dà un’idea del “valore tipico”
+#         degli arrivi che non è influenzato dagli anni con un numero insolitamente alto o basso di arrivi.
 #Deviazione standard: La deviazione standard è una misura di quanto i dati si discostano dalla media.
-# Un valore di deviazione standard alto indica che i dati sono molto dispersi, mentre un valore basso
-# indica che i dati sono vicini alla media. Nel tuo caso, la deviazione standard degli arrivi per ogni
-# regione ti dà un’idea di quanto sia variabile il numero di arrivi da un anno all’altro.
+#                     Un valore di deviazione standard alto indica che i dati sono molto dispersi, mentre un valore basso
+#                     indica che i dati sono vicini alla media. Nel tuo caso, la deviazione standard degli arrivi per ogni
+#                     regione ti dà un’idea di quanto sia variabile il numero di arrivi da un anno all’altro.
 
 # La relazione tra media, mediana e deviazione standard può aiutarti a capire la distribuzione dei tuoi dati.
 # Se la media è molto diversa dalla mediana, i tuoi dati potrebbero essere distorti. Se la deviazione standard
 # è alta, i tuoi dati sono molto dispersi; se è bassa, i tuoi dati sono concentrati attorno alla media.
+
 def plot_stats(df_arr_agri):
     stats = df_arr_agri.groupby('Regione')['Arrivi'].agg(['mean', 'std', 'median'])
     stats.plot(kind='bar', subplots=True, layout=(3,1), figsize=(10,10))
     plt.tight_layout()
     plt.show()
+
+
+    
+
 
 # D’altra parte, una matrice di correlazione misura il grado in cui le serie di numeri sono correlate.
 # In questo caso, stai calcolando la correlazione tra i numeri di arrivi per ogni regione nel corso 
@@ -79,6 +84,15 @@ def plot_stats(df_arr_agri):
 # o che stanno attuando strategie di marketing simili. Se hanno una forte correlazione 
 # negativa, potrebbe significare che stanno competendo per gli stessi turisti.
 def plot_corr_matrix(df_arr_agri):
+    
+    df = df_arr_agri
+    df_pivot = df.pivot(index='Regione', columns='Anno', values='Arrivi')
+    df_pivot.plot(kind='bar', stacked=False)
+    plt.title('Arrivi per Regione e Anno')
+    plt.xlabel('Regione')
+    plt.ylabel('Arrivi')
+    plt.legend(title='Anno')
+    
     data = df_arr_agri[['Anno', 'Regione', 'Arrivi']]
     data_grouped = data.groupby(['Regione', 'Anno']).sum().reset_index()
     pivot_df = data_grouped.pivot(index='Regione', columns='Anno', values='Arrivi')
@@ -118,10 +132,13 @@ def plot_corr_matrix2(df_arr_agri, df_pre_agri):
     plt.title('Correlazione tra Arrivi e Presenze per Regione (Agriturismi)')
     plt.show()
 
-regioni_con_arrivi_per_anno(df_arr_agri)  
-plot_stats(df_arr_agri)
+
+#regioni_con_arrivi_per_anno(df_arr_agri)  
+#plot_stats(df_arr_agri)
 plot_corr_matrix(df_arr_agri)
-plot_corr_matrix2(df_arr_agri, df_pre_agri)
+#plot_corr_matrix2(df_arr_agri, df_pre_agri)
+
+
 
 
 
